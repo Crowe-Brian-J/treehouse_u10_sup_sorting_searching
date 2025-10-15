@@ -3,6 +3,7 @@
 
 const fs = require('fs')
 const path = require('path')
+const { performance } = require('perf_hooks')
 
 /*
  * loadFile(filePath, options)
@@ -31,10 +32,11 @@ const loadFile = (filePath, options = { parse: 'number' }) => {
 // Fisher-Yates shuffle (in-place)
 const shuffle = (arr) => {
   for (let i = arr.length - 1; i > 0; i--) {
-    const j = (Math.floor(Math.random() * (i + 1))[(arr[i], arr[j])] = [
-      arr[j],
-      arr[i]
-    ])
+    const j = Math.floor(Math.random() * (i + 1))
+    // Because VSCode keeps autoformatting
+    const tmp = arr[i]
+    arr[i] = arr[j]
+    arr[j] = tmp
   }
 }
 
@@ -69,3 +71,52 @@ const bogoSort = (arr, options = { maxAttempts: 1000000 }) => {
 }
 
 // CLI runner
+const main = () => {
+  const argv = process.argv.slice(2)
+  if (argv.length < 1) {
+    console.error('Usage: node js/bogoSort.js <file> [-- strings] [--max=N]')
+    process.exit(1)
+  }
+
+  const file = argv[0]
+  const parseAs = argv.includes('--strings') ? 'string' : 'number'
+  const maxArg = argv.find((a) => a.startsWith('--max='))
+  const maxAttempts = maxArg ? Number(maxArg.split('=')[1]) : 1000000
+
+  if (maxArg && Number.isNaN(maxAttempts)) {
+    console.error('Invalid --max value')
+    process.exit(1)
+  }
+
+  const arr = loadFile(file, { parse: parseAs })
+  console.log(`Loadded ${arr.length} items from ${file}. Starting bogo sort...`)
+
+  // use copy
+  const working = arr.slice()
+
+  // start timer
+  const start = performance.now()
+
+  const attempts = bogoSort(working, { maxAttempts })
+
+  // Stop timer and compute elapsed seconds correctly
+  const end = performance.now()
+  const elapsed = (end - start) / 1000
+
+  if (attempts === false) {
+    console.log(
+      `Gave up after ${maxAttempts} attempts (${elapsed.toFixed(
+        3
+      )}s). Not sorted.`
+    )
+  } else {
+    console.log(`Sorted after ${attempts} attempts in ${elapsed.toFixed(3)}s.`)
+    console.log('Result (first 20 items):', working.slice(0, 20))
+  }
+}
+
+// Run when executed directly
+if (require.main === module) main()
+
+// Export for tests
+module.exports = { loadFile, bogoSort, isSorted, shuffle }
