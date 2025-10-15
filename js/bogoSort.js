@@ -81,7 +81,7 @@ const main = () => {
   const file = argv[0]
   const parseAs = argv.includes('--strings') ? 'string' : 'number'
   const maxArg = argv.find((a) => a.startsWith('--max='))
-  const maxAttempts = maxArg ? Number(maxArg.split('=')[1]) : 1000000
+  const maxAttempts = maxArg ? Number(maxArg.split('=')[1]) : 100000
 
   if (maxArg && Number.isNaN(maxAttempts)) {
     console.error('Invalid --max value')
