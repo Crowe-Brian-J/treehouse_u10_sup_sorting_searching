@@ -3,18 +3,18 @@
 
 const fs = require('fs')
 const path = require('path')
-const { performance } = require('perf_hooks')
+const { elapsedTime } = require('./timeUtils') // import our utility
 
 /*
  * loadFile(filePath, options)
- * - if options.pars === 'number', converts each line to Number
+ * - if options.parse === 'number', converts each line to Number
  * - if options.parse === 'string', leaves as string (trimmed)
  */
 const loadFile = (filePath, options = { parse: 'number' }) => {
   const abs = path.resolve(filePath)
   const raw = fs.readFileSync(abs, 'utf8')
   const lines = raw.split(/\r?\n/).filter((line) => line.length > 0)
-  // To account for files in the numbers directory
+
   if (options.parse === 'number') {
     return lines.map((line) => {
       const n = Number(line.trim())
@@ -23,7 +23,6 @@ const loadFile = (filePath, options = { parse: 'number' }) => {
       }
       return n
     })
-    // To account for files in the names directory
   } else {
     return lines.map((line) => line.trim())
   }
@@ -33,7 +32,6 @@ const loadFile = (filePath, options = { parse: 'number' }) => {
 const shuffle = (arr) => {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    // Because VSCode keeps autoformatting
     const tmp = arr[i]
     arr[i] = arr[j]
     arr[j] = tmp
@@ -58,7 +56,6 @@ const bogoSort = (arr, options = { maxAttempts: 1000000 }) => {
   const max = options.maxAttempts
   if (arr.length <= 1) return 0
 
-  // Quick check: if already sorted, return 0
   if (isSorted(arr)) return 0
 
   for (let attempt = 1; attempt <= max; attempt++) {
@@ -67,14 +64,14 @@ const bogoSort = (arr, options = { maxAttempts: 1000000 }) => {
       return attempt
     }
   }
-  return false // Did not sort algorithm within max attempts
+  return false
 }
 
 // CLI runner
 const main = () => {
   const argv = process.argv.slice(2)
   if (argv.length < 1) {
-    console.error('Usage: node js/bogoSort.js <file> [-- strings] [--max=N]')
+    console.error('Usage: node js/bogoSort.js <file> [--strings] [--max=N]')
     process.exit(1)
   }
 
@@ -89,28 +86,26 @@ const main = () => {
   }
 
   const arr = loadFile(file, { parse: parseAs })
-  console.log(`Loadded ${arr.length} items from ${file}. Starting bogo sort...`)
+  console.log(`Loaded ${arr.length} items from ${file}. Starting bogo sort...`)
 
-  // use copy
   const working = arr.slice()
 
-  // start timer
-  const start = performance.now()
-
-  const attempts = bogoSort(working, { maxAttempts })
-
-  // Stop timer and compute elapsed seconds correctly
-  const end = performance.now()
-  const elapsed = (end - start) / 1000
+  // Use elapsedTime utility
+  const { result: attempts, elapsed } = elapsedTime(
+    () => bogoSort(working, { maxAttempts }),
+    'ms' // milliseconds
+  )
 
   if (attempts === false) {
     console.log(
       `Gave up after ${maxAttempts} attempts (${elapsed.toFixed(
         3
-      )}s). Not sorted.`
+      )}ms). Not sorted.`
     )
   } else {
-    console.log(`Sorted after ${attempts} attempts in ${elapsed.toFixed(3)}s.`)
+    console.log(
+      `Sorted after ${attempts} attempts in ${elapsed.toFixed(3)} milliseconds.`
+    )
     console.log('Result (first 20 items):', working.slice(0, 20))
   }
 }
