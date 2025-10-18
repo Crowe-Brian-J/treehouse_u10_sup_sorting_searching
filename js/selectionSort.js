@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const { performance } = require('perf_hooks')
+const { elapsedTime } = require('./timeUtils')
 
 const loadNumbers = (filePath) => {
   const data = fs.readFileSync(path.join(__dirname, filePath), 'utf8')
@@ -50,10 +51,11 @@ const selectionSort = (arr) => {
 // console.log(selectionSort([5, 2, 4, 1])) // [1, 2, 4, 5]
 
 //Log numbers
-const numbersStart = performance.now()
-const numbersResult = selectionSort(numbersArray)
-const numbersEnd = performance.now()
-const numbersElapsed = (numbersEnd - numbersStart) * 1000
+const { result: numbersResult, elapsed: numbersElapsed } = elapsedTime(
+  () => selectionSort(numbersArray),
+  'µsecs'
+)
+
 console.log('Original:', numbersArray)
 console.log('Sorted:', numbersResult.sortedArr)
 console.log(
@@ -62,10 +64,10 @@ console.log(
 console.log(`Numbers sort took ${numbersElapsed} microseconds`)
 
 // Log names
-const namesStart = performance.now()
-const namesResult = selectionSort(namesArray.slice(0, 25))
-const namesEnd = performance.now()
-const namesElapsed = (namesEnd - namesStart) * 1000
+const { result: namesResult, elapsed: namesElapsed } = elapsedTime(() =>
+  selectionSort(namesArray.slice(0, 25))
+)
+
 console.log('Original Names List:', namesArray.slice(0, 25))
 console.log('Sorted Names List:', namesResult.sortedArr)
 console.log(
