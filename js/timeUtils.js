@@ -7,8 +7,9 @@ const elapsedTime = (cb, unit = 'µsecs') => {
   let elapsed = end - start
 
   if (unit === 'µsecs') elapsed *= 1000
+  else if (unit === 'seconds') elapsed /= 1000
 
-  return { result, elapsed }
+  return { result, elapsed, unit }
 }
 
 module.exports = { elapsedTime }

@@ -8,3 +8,4 @@ I hate bogoSort. I understand this is an exercise, but its ridiculous.
 selectionSort is better, takes place in microseconds vs milliseconds (depending on volume of data)
 ---
 ### recursion - repeatedly divides the list into smaller sublists, sorts each sublist (by calling the same function), then combines the sorted sublists to produce a fully sorted list
+recursive sorts need a base case to prevent stack overflow error (indefinite function calls)
