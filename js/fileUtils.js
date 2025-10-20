@@ -5,7 +5,13 @@ const fs = require('fs')
 const path = require('path')
 
 const loadFile = (filePath, options = { parse: 'number' }) => {
-  const absPath = path.resolve(filePath)
+  const base = path.resolve(__dirname, '..') // js/.. -> root directory
+  const absPath = path.resolve(base, filePath)
+
+  if (!fs.existsSync(absPath)) {
+    throw new Error(`File not found: ${absPath}`)
+  }
+
   const raw = fs.readFileSync(absPath, 'utf8')
   const lines = raw.split(/\r?\n/).filter((line) => line.length > 0)
 
