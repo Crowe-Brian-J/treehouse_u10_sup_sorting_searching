@@ -1,5 +1,9 @@
 // js/quicksort.js
+'use strict'
 
+const { runSort } = require('./runSort')
+
+// Uses recursion
 const quickSort = (arr) => {
   if (arr.length <= 1) return arr // Base Case
 
@@ -14,4 +18,9 @@ const quickSort = (arr) => {
   return [...quickSort(left), pivot, ...quickSort(right)]
 }
 
-console.log(quickSort([5, 3, 7, 2, 8, 1])) // Output: [1, 2, 3, 5, 7, 8]
+if (require.main === module) {
+  // Pass the unit you want here (e.g. 'µsecs', or 'msecs')
+  runSort(quickSort, 'QuickSort', 'µsecs')
+}
+
+module.exports = { quickSort }

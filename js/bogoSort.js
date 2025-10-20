@@ -2,8 +2,7 @@
 'use strict'
 
 // Utilities
-const { elapsedTime } = require('./timeUtils') // import our time utility
-const { loadFile } = require('./fileUtils')
+const { runSort } = require('./runSort')
 
 // Fisher-Yates shuffle (in-place)
 const shuffle = (arr) => {
@@ -23,7 +22,7 @@ const isSorted = (arr) => {
   return true
 }
 
-const bogoSort = (arr, options = { maxAttempts: 1000000 }) => {
+const bogoSort = (arr, options = { maxAttempts: 10000 }) => {
   const max = options.maxAttempts
   if (arr.length <= 1) return 0
 
@@ -39,50 +38,17 @@ const bogoSort = (arr, options = { maxAttempts: 1000000 }) => {
 }
 
 // CLI runner
-const main = () => {
-  const argv = process.argv.slice(2)
-  if (argv.length < 1) {
-    console.error('Usage: node js/bogoSort.js <file> [--strings] [--max=N]')
-    process.exit(1)
-  }
-
-  const file = argv[0]
-  const parseAs = argv.includes('--strings') ? 'string' : 'number'
-  const maxArg = argv.find((a) => a.startsWith('--max='))
-  const maxAttempts = maxArg ? Number(maxArg.split('=')[1]) : 100000
-
-  if (maxArg && Number.isNaN(maxAttempts)) {
-    console.error('Invalid --max value')
-    process.exit(1)
-  }
-
-  const arr = loadFile(file, { parse: parseAs })
-  console.log(`Loaded ${arr.length} items from ${file}. Starting bogo sort...`)
-
-  const working = arr.slice()
-
-  // Use elapsedTime utility
-  const { result: attempts, elapsed } = elapsedTime(
-    () => bogoSort(working, { maxAttempts }),
-    'ms' // milliseconds
+if (require.main === module) {
+  runSort(
+    (arr) => {
+      const working = arr.slice()
+      bogoSort(working, { maxAttempts: 100000 })
+      return working // now runSort can safely slice
+    },
+    'BogoSort',
+    'msecs'
   )
-
-  if (attempts === false) {
-    console.log(
-      `Gave up after ${maxAttempts} attempts (${elapsed.toFixed(
-        3
-      )}ms). Not sorted.`
-    )
-  } else {
-    console.log(
-      `Sorted after ${attempts} attempts in ${elapsed.toFixed(3)} milliseconds.`
-    )
-    console.log('Result (first 20 items):', working.slice(0, 20))
-  }
 }
 
-// Run when executed directly
-if (require.main === module) main()
-
 // Export for tests
-module.exports = { loadFile, bogoSort, isSorted, shuffle }
+module.exports = { bogoSort, isSorted, shuffle }

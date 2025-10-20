@@ -5,8 +5,7 @@ const fs = require('fs')
 const path = require('path')
 
 // Utilities
-const { elapsedTime } = require('./timeUtils')
-const { loadFile } = require('./fileUtils')
+const { runSort } = require('./runSort')
 
 // Recursive Merge Sort
 const recursiveSort = (arr) => {
@@ -59,7 +58,9 @@ const main = () => {
 }
 
 // Run if executed directly
-if (require.main === module) main()
+if (require.main === module) {
+  runSort(recursiveSort, 'RecursiveSort', 'µsecs')
+}
 
 // Export for reuse/testing
-module.exports = { loadFile, recursiveSort }
+module.exports = { recursiveSort }
