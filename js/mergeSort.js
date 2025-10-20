@@ -35,7 +35,7 @@ const mergeSort = (arr) => {
 }
 
 if (require.main === module) {
-  runSort(mergeSort, 'MergeSort', 'µsecs')
+  runSort(mergeSort, 'MergeSort', 'msecs')
 }
 
 module.exports = { mergeSort }
