@@ -3,30 +3,8 @@
 
 const fs = require('fs')
 const path = require('path')
-const { elapsedTime } = require('./timeUtils') // import our utility
-
-/*
- * loadFile(filePath, options)
- * - if options.parse === 'number', converts each line to Number
- * - if options.parse === 'string', leaves as string (trimmed)
- */
-const loadFile = (filePath, options = { parse: 'number' }) => {
-  const abs = path.resolve(filePath)
-  const raw = fs.readFileSync(abs, 'utf8')
-  const lines = raw.split(/\r?\n/).filter((line) => line.length > 0)
-
-  if (options.parse === 'number') {
-    return lines.map((line) => {
-      const n = Number(line.trim())
-      if (Number.isNaN(n)) {
-        throw new Error(`Invalid number in file: "${line}"`)
-      }
-      return n
-    })
-  } else {
-    return lines.map((line) => line.trim())
-  }
-}
+const { elapsedTime } = require('./timeUtils') // import our time utility
+const { loadFile } = require('./fileUtils')
 
 // Fisher-Yates shuffle (in-place)
 const shuffle = (arr) => {
@@ -46,12 +24,6 @@ const isSorted = (arr) => {
   return true
 }
 
-/*
- * bogoSort (in-place)
- * - arr: array to sort (mutated)
- * - options.maxAttempts: stops after that many tries and returns false
- * - returns number of attempts if sorted, or false if maxAttempts reached
- */
 const bogoSort = (arr, options = { maxAttempts: 1000000 }) => {
   const max = options.maxAttempts
   if (arr.length <= 1) return 0
