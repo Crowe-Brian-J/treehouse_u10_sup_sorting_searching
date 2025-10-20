@@ -13,3 +13,13 @@ recursive sorts need a base case to prevent stack overflow error (indefinite fun
 ### quickSort - a divide and conquer algorithm that selects a pivot element and partitions the array so that all elements less than the pivot come before it and all greater elements come after. It then recursively sorts the subarrays. QuickSort is efficient on average (O(n log n)) but can degrade to O(n^2) in the worst case if poor pivots are chosen
 ---
 ### mergeSort - a stable, recursive divide-and-conquer algorithm that splits an array into halves until each subarray has one element, then merges them back together in sorted order. Its time complexity is consistently O(n log n), making it predictable and efficient, though it requires additional memory for merging
+---
+## Big-O Run Times of Sorting Algorithms
+- Selection Sort = O(n^2)
+- Quick Sort = O(n log n) (average case - worst case goes to O(n^2))
+- Merge Sort = O(n log n)
+
+### Big O Notation
+- Tells you the number of times an operation is performed
+- Doesn't describe the duration of the operation
+- A useful tool for quickly describing how the run time of an algorithm increases as the data set it's operating on gets really, really big
