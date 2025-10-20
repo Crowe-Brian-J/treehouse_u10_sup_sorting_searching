@@ -1,54 +1,12 @@
-// recursion.js
+// js/recursion.js
 'use strict'
 
 const fs = require('fs')
 const path = require('path')
+
+// Utilities
 const { elapsedTime } = require('./timeUtils')
-
-// Load a file (numbers or names)
-const loadFile = (filePath, options = { parse: 'number' }) => {
-  const abs = path.resolve(filePath)
-
-  // Safety checks with clear errors
-  if (!fs.existsSync(abs)) {
-    throw new Error(`File not found: ${abs}`)
-  }
-  const stat = fs.statSync(abs)
-  if (!stat.isFile()) {
-    throw new Error(`Expected a file but got something else: ${abs}`)
-  }
-
-  // Read explicitly as utf8 to ensure string
-  const raw = fs.readFileSync(abs, 'utf8')
-
-  // Debugging/logging - remove or comment out after things work
-  // console.log('DEBUG loadFile: type of raw =', typeof raw)
-  // console.log('DEBUG first 200 chars:', raw.slice(0, 200))
-
-  if (typeof raw !== 'string') {
-    throw new Error(`Unexpected data type from fs.readFileSync: ${typeof raw}`)
-  }
-
-  const lines = raw.split(/\r?\n/).filter((line) => line.length > 0)
-
-  if (!Array.isArray(lines)) {
-    throw new Error(
-      'Internal error: expected lines to be an array after split/filter'
-    )
-  }
-
-  if (options.parse === 'number') {
-    return lines.map((line) => {
-      const n = Number(line.trim())
-      if (Number.isNaN(n)) {
-        throw new Error(`Invalid number in file: "${line}"`)
-      }
-      return n
-    })
-  } else {
-    return lines.map((line) => line.trim())
-  }
-}
+const { loadFile } = require('./fileUtils')
 
 // Recursive Merge Sort
 const recursiveSort = (arr) => {
