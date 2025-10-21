@@ -1,3 +1,4 @@
+# Sort
 ### Linear Search - Go one by one, by index to check the list/array to find the desired value
 ### Binary Search - Needs list/array to be sorted, split list in the middle, find if desired value equals, is lesser than or is greater than midpoint, cuts off half values if not equal, repeats until value found
 ---
@@ -23,3 +24,8 @@ recursive sorts need a base case to prevent stack overflow error (indefinite fun
 - Tells you the number of times an operation is performed
 - Doesn't describe the duration of the operation
 - A useful tool for quickly describing how the run time of an algorithm increases as the data set it's operating on gets really, really big
+
+# Search
+### Linear Search - sequentially examines each element in an array until the desired value is found or the end of the data structure is reached; operates by comparing each item with the target value one by one
+
+Complexity: O(n)
