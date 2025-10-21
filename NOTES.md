@@ -27,5 +27,4 @@ recursive sorts need a base case to prevent stack overflow error (indefinite fun
 
 # Search
 ### Linear Search - sequentially examines each element in an array until the desired value is found or the end of the data structure is reached; operates by comparing each item with the target value one by one
-
 Complexity: O(n)
