@@ -62,7 +62,7 @@ const runSearch = (cb, label = 'Search Algorithm', unit = 'µsecs') => {
   console.log(`Search Target: ${target}`)
   console.log(
     index !== null
-      ? `Found at index: ${index}`
+      ? `Found at index: ${index} in '${file}'`
       : `Target not found in collection.`
   )
 

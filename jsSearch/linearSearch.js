@@ -12,12 +12,12 @@ const indexOfItem = (collection, target) => {
   return null
 }
 
-// const namesArr = loadFile('names/sorted.txt', { parse: 'string' })
+// Example target for names/sorted.txt -->
+// 'Lucie Hansman' --> index: 65829
 
-// const index = indexOfItem(namesArr, 'Lucie Hansman')
-// console.log(index) // 65829
-
-//possible refactor -> runSearch - similar to runSort so we can see how long it takes
+// Example CLI call in terminal
+// node jsSearch/<file>.js <filePath for list> <target> --strings
+// node jsSearch/linearSearch.js names/sorted.txt "Lucie Hansman" --strings
 
 if (require.main === module) {
   runSearch(indexOfItem, 'linearSearch', 'µsecs')
