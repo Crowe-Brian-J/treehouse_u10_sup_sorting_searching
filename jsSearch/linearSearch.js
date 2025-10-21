@@ -1,4 +1,5 @@
 // jsSearch/linearSearch.js
+'use strict'
 
 const { runSearch } = require('./runSearch')
 

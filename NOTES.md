@@ -28,3 +28,5 @@ recursive sorts need a base case to prevent stack overflow error (indefinite fun
 # Search
 ### Linear Search - sequentially examines each element in an array until the desired value is found or the end of the data structure is reached; operates by comparing each item with the target value one by one
 Complexity: O(n)
+### Binary Search - narrows down the search by halving the list each time it searches and comparing the target value to the middle element. Continues until found or the interval becomes empty
+Complexity: O(log n)
