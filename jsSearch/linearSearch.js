@@ -1,6 +1,6 @@
 // jsSearch/linearSearch.js
 
-const { loadFile } = require('../js/fileUtils')
+const { runSearch } = require('./runSearch')
 
 // collection is the array, target is the value
 const indexOfItem = (collection, target) => {
